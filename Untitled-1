@@ -1,0 +1,60 @@
+def winning_team
+    home_team = ["Brooklyn Nets", 0]
+    away_team = ["Charlotte Hornets", 0]
+
+    game_hash.each do |home_away, value|
+        value.each do |team_atts, inner_value|
+            if team_atts == :players 
+                inner_value.each do |player_hashes|
+                    player_hashes.each do |k,v|
+                        if k == :points
+                            if game_hash[home_away] == :home 
+                                home_team[1] += v
+                            end 
+                            if game_hash[home_away] == :away 
+                                away_team[1] += v
+                            end
+                            binding.pry
+                        end 
+                    end 
+                end 
+            end 
+        end 
+    end
+    if home_team[1]>away_team[1]
+        return home_team[0]
+    else return away_team[0]
+    end 
+end 
+
+
+
+-----
+
+    home_team = ["Brooklyn Nets", 0]
+    away_team = ["Charlotte Hornets", 0]
+
+    game_hash.each do |home_away, value|
+        value.each do |team_atts, inner_value|
+            
+            if team_atts == :players
+                inner_value.each do |player_hash|
+                    player_hash.each do |stat, num|
+                        if home_away == :home
+                            put stat
+                            if stat == :points
+                                home_team[1] += num 
+                            end 
+                        end 
+                        if home_away == :away
+                            if stat == :points
+                                home_team[1] += num 
+                            end 
+                        end
+                    
+                    end
+                end 
+            end 
+        end 
+    end
+    away_team
