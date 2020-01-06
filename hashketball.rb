@@ -178,3 +178,83 @@ def player_numbers(team_name)
   end 
   return jersey_number
 end 
+
+def player_stats(name)
+  player_stats = {}
+  game_hash.each do |team, team_details|
+    team_details[:players].each do |player|
+      if player[:player_name] == name
+        player.delete(:player_name)
+        player_stats = player
+      end
+    end
+  end
+  return player_stats
+end
+
+def big_shoe_rebounds
+  big_foot = 0
+  rebounds = 0
+
+  game_hash.each do |team, team_details|
+    team_details[:players].each do |player|
+      if player[:shoe] > big_foot
+        big_foot = player[:shoe]
+        rebounds = player[:rebounds]
+      end
+    end
+  end
+  return rebounds
+end
+
+
+def most_points_scored
+  most_points_and_name = [0,""]
+  game_hash.each do |place, team|
+    team[:players].each do |player_stats|
+      if player_stats[:points] > most_points_and_name[0]
+        most_points_and_name[0] = player_stats[:points]
+        most_points_and_name[1] = player_stats[:player_name]
+      end
+    end
+  end
+  return most_points_and_name[1]
+end
+
+def winning_team
+  team_scores = {} # we will store each team's name and score here
+  game_hash.each do |location, team_data|
+    if !team_scores[:team_name]
+      team_scores[team_data[:team_name]] = 0
+    end
+    team_data[:players].each do |player_stats| 
+      team_scores[team_data[:team_name]] += player_stats[:points]
+    end
+  end
+  return (team_scores.values[0] > team_scores.values[1]) ? team_scores.keys[0] : team_scores.keys[1]
+end
+
+def player_with_longest_name
+  longest_name = ""
+  game_hash.each do |location, team_data|
+    team_data[:players].each do |player_stats| 
+      if player_stats[:player_name].length > longest_name.length
+        longest_name = player_stats[:player_name]
+      end
+    end
+  end
+  return longest_name
+end
+
+def long_name_steals_a_ton?
+  most_steals = ["", 0]
+  game_hash.each do |location, team_data|
+    team_data[:players].each do |player_stats| 
+      if player_stats[:steals] > most_steals[1]
+        most_steals = [player_stats[:player_name], player_stats[:steals]]
+      end
+    end
+  end
+  return (player_with_longest_name == most_steals[0])
+end
+
